@@ -1,4 +1,11 @@
-
+function getTimeString(time) {
+    // get hours and rest second
+    const hour = parseInt(time / 3600);
+    let remainingSecond = parseInt(time % 3600);
+    const minute = parseInt(remainingSecond / 60);
+    remainingSecond = remainingSecond % 60;
+    return `${hour} hour ${minute} minute ${remainingSecond} second ago`;
+}
 
 //  1 fetch load and show categories on html
 
@@ -53,11 +60,15 @@ const displayVideos = (videos) => {
         card.innerHTML = `
          <div class="w-full max-w-sm mx-auto border rounded-lg overflow-hidden shadow">
   <!-- Thumbnail -->
-  <figure class="h-[200px]">
+  <figure class="h-[200px] relative">
     <img
       src="${video.thumbnail}"
       class="h-full w-full object-cover"
       alt="Video Thumbnail" />
+      ${
+        video.others?.posted_date?.length == 0? "" : `<span class="absolute right-2 bottom-2 text-white bg-black rounded p-1">${getTimeString(video.others?.posted_date)}</span>`
+      }
+      
   </figure>
 
   <!-- Profile info -->
@@ -72,7 +83,8 @@ const displayVideos = (videos) => {
       <h2 class="font-semibold">${video.title}</h2>
       <div class="flex gap-2 items-center">
       <p class="text-sm text-gray-600">${video.authors[0].profile_name} views</p>
-      <img class="" src="https://img.icons8.com/?size=32&id=2AuMnRFVB9b1&format=png"/>
+      ${video.authors[0].verified ? `<img class="w-4 h-4 inline-block" src="https://img.icons8.com/color/48/000000/verified-badge.png
+        " alt="">`: ""}
       </div>
       <p class="text-sm text-gray-500">${video.others.published_date}</p>
     </div>
