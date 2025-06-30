@@ -51,20 +51,33 @@ const displayVideos = (videos) => {
         const card = document.createElement('div')
         card.classList = 'card card-compact'
         card.innerHTML = `
-         <figure class="h-[200px]">
+         <div class="w-full max-w-sm mx-auto border rounded-lg overflow-hidden shadow">
+  <!-- Thumbnail -->
+  <figure class="h-[200px]">
     <img
-      src=${video.thumbnail}
-      class="h-full w-full object-cover overflow-hidden"
-      alt="Shoe"/>
-  </figure">
-  <div class="px-0 py-2 flex gap-2">
-    <div> <img src=""/> </div>
-    <div> 
-    <h2></h2> 
-    <p></p> 
-    <p></p> 
+      src="${video.thumbnail}"
+      class="h-full w-full object-cover"
+      alt="Video Thumbnail" />
+  </figure>
+
+  <!-- Profile info -->
+  <div class="px-4 py-3 flex gap-3 items-start">
+    <!-- Author Image -->
+    <div>
+      <img class="w-10 h-10 rounded-full" src="${video.authors[0].profile_picture}" alt="Author" />
+    </div>
+
+    <!-- Author Info -->
+    <div>
+      <h2 class="font-semibold">${video.title}</h2>
+      <div class="flex gap-2 items-center">
+      <p class="text-sm text-gray-600">${video.authors[0].profile_name} views</p>
+      <img class="" src="https://img.icons8.com/?size=32&id=2AuMnRFVB9b1&format=png"/>
+      </div>
+      <p class="text-sm text-gray-500">${video.others.published_date}</p>
     </div>
   </div>
+</div>
 
         `;
         videosContainer.append(card);
