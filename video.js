@@ -25,6 +25,33 @@ const loadVideos = () => {
         .catch((error => console.log(error)))
 }
 
+const removeActiveClass = () => {
+    const buttons = document.getElementsByClassName('category-btn')
+    console.log(buttons);
+
+    for (let btn of buttons) {
+        btn.classList.remove('active');
+    }
+
+}
+
+// loadCategoryVideoWithId
+
+const loadCategoryVideoWithId = (id) => {
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
+        .then((res) => res.json())
+        .then((data) => {
+
+            // ActiveClass Remove
+            removeActiveClass();
+            // activeId Class
+
+            const btnActive = document.getElementById(`btn-${id}`);
+            btnActive.classList.add("active")
+            displayVideos(data.category)
+        })
+        .catch((err) => console.log(err));
+}
 
 // {
 //     "category_id": "1001",
@@ -48,7 +75,25 @@ const loadVideos = () => {
 
 const displayVideos = (videos) => {
     // get videosContainer parent
-    const videosContainer = document.getElementById('videos')
+    const videosContainer = document.getElementById('videos');
+
+    // emptyContainer
+    videosContainer.innerHTML = "";
+
+    // noLength return
+
+    if (videos.length == 0) {
+        videosContainer.classList.remove('grid')
+        videosContainer.innerHTML = `
+        <div class="min-h-[600px] flex flex-col gap-5 justify-center items-center">
+        <img src="assets/icon.png" />
+        <p class="font-bold text-xl">NO CONTENT HERE IN THIS CATEGORY</p>
+        </div>
+        `;
+        return
+    } else {
+        videosContainer.classList.add('grid')
+    }
 
     // loopVideos with no return
     videos.forEach((video) => {
@@ -65,9 +110,8 @@ const displayVideos = (videos) => {
       src="${video.thumbnail}"
       class="h-full w-full object-cover"
       alt="Video Thumbnail" />
-      ${
-        video.others?.posted_date?.length == 0? "" : `<span class="absolute right-2 bottom-2 text-white bg-black rounded p-1">${getTimeString(video.others?.posted_date)}</span>`
-      }
+      ${video.others?.posted_date?.length == 0 ? "" : `<span class="absolute right-2 bottom-2 text-white bg-black rounded p-1">${getTimeString(video.others?.posted_date)}</span>`
+            }
       
   </figure>
 
@@ -108,12 +152,14 @@ const displayCategories = (categories) => {
         console.log(item);
 
         // create a button
-        const button = document.createElement('button')
-        button.classList = 'btn';
-        button.innerText = item.category;
-
+        const buttonContainer = document.createElement('div')
+        buttonContainer.innerHTML = `
+        <button id="btn-${item.category_id}" onClick="loadCategoryVideoWithId(${item.category_id})" class="btn category-btn">
+        ${item.category}
+        </button>
+        `
         // add button to categoryContainer
-        categoryContainer.append(button);
+        categoryContainer.append(buttonContainer);
     });
 };
 
