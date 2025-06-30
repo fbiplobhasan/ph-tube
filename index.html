@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ph-Tube</title>
+    <!-- daisy ui -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.24/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <!-- tailwind css -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- css style -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav class="w-11/12 mx-auto py-3 flex justify-between items-center border-b-2">
+        <div class="logo w-[100px]">
+            <img class="" src="./assets/Logo.png" alt="">
+        </div>
+        <div class="search"><input type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" />
+        </div>
+        <div class="sort"><button class="btn">Sort</button></div>
+    </nav>
+    <header class="flex justify-center gap-5 py-3" id="categories"></header>
+    <main>
+        <section id="videos"
+         class="w-11/12 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 py-4 gap-5"></section>
+    </main>
+    <script src="video.js"></script>
+</body>
+
+</html>
