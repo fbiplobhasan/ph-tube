@@ -18,13 +18,14 @@ const loadCategories = () => {
 }
 
 // fetch videos data
-const loadVideos = () => {
-    fetch('https://openapi.programming-hero.com/api/phero-tube/videos')
+const loadVideos = (searchText = "") => {
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchText}`)
         .then((res) => res.json())
         .then((data) => displayVideos(data.videos))
         .catch((error => console.log(error)))
 }
 
+// removeActive class when other button clicked
 const removeActiveClass = () => {
     const buttons = document.getElementsByClassName('category-btn')
     console.log(buttons);
@@ -51,6 +52,33 @@ const loadCategoryVideoWithId = (id) => {
             displayVideos(data.category)
         })
         .catch((err) => console.log(err));
+}
+
+// loadVideoDetailsWithId
+const loadVideoDetails = async (videoId) => {
+    const uri = `https://openapi.programming-hero.com/api/phero-tube/video/${videoId}`
+    const res = await fetch(uri);
+    const data = await res.json();
+    // console.log(data);
+    displayVideoDetails(data.video)
+}
+
+// displayVideoDetails
+const displayVideoDetails = (video) => {
+console.log(video);
+const detailsContainer = document.getElementById('modal-content')
+
+detailsContainer.innerHTML = `
+<img src=${video.thumbnail} alt="">
+    <p>${video.description}</p>
+`
+
+
+// way-1
+// document.getElementById('showModalData').click();
+
+// way-2
+document.getElementById('customModal').showModal();
 }
 
 // {
@@ -130,7 +158,9 @@ const displayVideos = (videos) => {
       ${video.authors[0].verified ? `<img class="w-4 h-4 inline-block" src="https://img.icons8.com/color/48/000000/verified-badge.png
         " alt="">`: ""}
       </div>
-      <p class="text-sm text-gray-500">${video.others.published_date}</p>
+      <p>
+      <button onClick="loadVideoDetails('${video.video_id}')" class="text-sm text-gray-500 btn btn-sm btn-error">Details</button>
+      </p>
     </div>
   </div>
 </div>
@@ -164,5 +194,8 @@ const displayCategories = (categories) => {
 };
 
 
+document.getElementById('search-input').addEventListener('keyup', (e)=> {
+ loadVideos(e.target.value);   
+})
 loadCategories();
 loadVideos();
